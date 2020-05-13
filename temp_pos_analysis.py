@@ -15,7 +15,7 @@ experiment_data = pd.read_csv(file_path, header=header_row - 1,
 axes = plt.gca()
 experiment_data.plot(x='time', y='pos', label='raw position data', ax=axes)
 # smoothen the position data via applying a rolling average
-experiment_data.pos = experiment_data.pos.rolling(window=10, center=True).mean()
+experiment_data.pos = experiment_data.pos.rolling(window=20, center=True).mean()
 
 experiment_data.plot(x='time', y='pos', label='smoothened position', ax=axes, grid=True)
 plt.show()
