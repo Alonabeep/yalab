@@ -20,9 +20,9 @@ def plot_region(low_func, upper_func, x_range):
     plt.fill_between(x, low_func(x), upper_func(x), facecolor='m', alpha=0.2)
 
 
-def plot_func(func, x_range, c='k', linestyle='solid', linewidth=None, zorder=None):
+def plot_func(func, x_range, **kwargs):
     x = np.linspace(x_range[0], x_range[1], 100)
-    plt.plot(x, func(x), c=c, linestyle=linestyle, linewidth=linewidth, zorder=zorder)
+    plt.plot(x, func(x), **kwargs)
 
 
 def plot_line(slope, intercept, fig, x_range=None, plot_axes=True, c='k', linestyle='solid', linewidth=None,
