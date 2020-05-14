@@ -1,6 +1,5 @@
+import matplotlib.pyplot as plt
 import pandas as pd
-
-from utils import *
 
 file_path = '..\\Results\\13.5.2020\\ex1 grouped - 13.5.2020.csv'
 
