@@ -18,21 +18,32 @@ start_time = 0  # [s]
 experiment_data = experiment_data[(experiment_data.temp > end_temp) & (experiment_data.time > start_time)]
 experiment_data.time -= start_time
 
-experiment_data.plot(x='time', y='temp', marker='.', linestyle='None', label='Experimental Data')
+experiment_data.plot(x='time', y='temp', marker='.', linestyle='None', label='Experimental Data', grid=True)
 
 # fit func and plot results
 data_func_to_fit = lambda t, amp, decay_time: amp * np.exp(-t / decay_time) + end_temp
 [amplitude, decay_time], errors = fit_func(data_func_to_fit, experiment_data.time, experiment_data.temp)
+fitted_func = lambda t: data_func_to_fit(t, amplitude, decay_time)
 
 time_range = [experiment_data.time.min(), experiment_data.time.max()]
 fitted_data_label = 'Function fitted to data \n' \
-    f'({amplitude:.2f}$\pm${errors[0]:.2f})exp(-t/({decay_time:.0f}$\pm${errors[1]:.0f}))+{end_temp}'
-plot_func(lambda t: data_func_to_fit(t, amplitude, decay_time), time_range, c='k', linestyle='dashed',
-          label=fitted_data_label)
+    f'T(t)=({amplitude:.2f}$\pm${errors[0]:.2f})exp(-t/({decay_time:.0f}$\pm${errors[1]:.0f}))+{end_temp}'
+plot_func(fitted_func, time_range, c='k', linestyle='dashed', label=fitted_data_label)
 
 plt.xlabel('Time[s]')
 plt.ylabel('Temperature[$\degree$C]')
 plt.title('T(t) while heating plate is turned off')
 plt.legend()
+
+plt.figure()
+temp_error = experiment_data.temp - fitted_func(experiment_data.time)
+
+plt.scatter(experiment_data.time, temp_error)
+
+plt.grid()
+plt.gca().set_axisbelow(True)
+plt.title('T(t) residuals plot')
+plt.xlabel('Time[s]')
+plt.ylabel('Temperature Error[$\degree$C]')
 
 plt.show()
