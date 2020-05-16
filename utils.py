@@ -51,9 +51,9 @@ def plot_log_fit(R, T, fig, R_type):
     plt.grid(True, which='both')
     plt.xlabel('$\mathbb{\Delta}$T[°C]')
     plt.ylabel('R[$\mathbb{\Omega}$]')
-    plt.title(
-        '$R_{' + R_type + '}$' + '($\mathbb{\Delta}$T)=' + f'({np.exp(log_coefficient):.2f}$\pm${errors[0]:.2f})' +
-        '$(\mathbb{\Delta}$T)' + f'^({power:.2f}$\pm${errors[1]:.2f})')
+#    plt.title(
+#        '$R_{' + R_type + '}$' + '($\mathbb{\Delta}$T)=' + f'({np.exp(log_coefficient):.2f}$\pm${errors[0]:.2f})' +
+#        '$(\mathbb{\Delta}$T)' + f'^({power:.2f}$\pm${errors[1]:.2f})')
 
 
 def plot_half_log_fit(R, T, fig, R_type):
@@ -75,15 +75,15 @@ def plot_half_log_fit(R, T, fig, R_type):
     plt.yticks(np.linspace(round(0.9 * min(R), 0), round(1.05 * max(R), 0), 5))
     plt.xticks(np.linspace(round(plot_range[0], 0), round(plot_range[1], 0), 5))
     plt.grid(True, which='both')
-
-    coefficient_err_str = '$^{' + f'{coefficient_high_err:.2f}' + '}_{' + f'{coefficient_low_err:.2f}' + '}$'
-    base_err_str = '$^{' + f'{base_high_err:.2f}' + '}_{' + f'{base_low_err:.2f}' + '}$'
+    
+#    coefficient_err_str = '$^{' + f'{coefficient_high_err:.2f}' + '}_{' + f'{coefficient_low_err:.2f}' + '}$'
+#    base_err_str = '$^{' + f'{base_high_err:.2f}' + '}_{' + f'{base_low_err:.2f}' + '}$'
 
     plt.xlabel('$\mathbb{\Delta}$T[°C]')
     plt.ylabel('R[$\mathbb{\Omega}$]')
-    plt.title(
-        '$R_{' + R_type + '}$' + '($\mathbb{\Delta}$T)=' + f'({coefficient:.2f}$\pm$' + coefficient_err_str +
-        f')({base:.2f}$\pm$' + base_err_str + ')^$(\mathbb{\Delta}$T)')
+#    plt.title(
+#        '$R_{' + R_type + '}$' + '($\mathbb{\Delta}$T)=' + f'({coefficient:.2f}$\pm$' + coefficient_err_str +
+#        f')({base:.2f}$\pm$' + base_err_str + ')^$(\mathbb{\Delta}$T)')
 
 
 def fit_and_plot_line(x, y, fig, x_range=None, plot_axes=False, c='k', linestyle='solid', linewidth=None, zorder=None):
