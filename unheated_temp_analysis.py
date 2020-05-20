@@ -35,7 +35,8 @@ if MEASURE_ROOM_TEMP:
 else:
     temp_to_analyze = 'temp'
 
-experiment_data.plot(x='time', y=temp_to_analyze, marker='.', linestyle='None', label='Experimental Data', grid=True)
+experiment_data.plot(x='time', y=temp_to_analyze, marker='.', linestyle='None', label='Experimental Data', grid=True,
+                     logy=True)
 
 # fit func and plot results
 temp_offset = 0 if MEASURE_ROOM_TEMP else end_temp
