@@ -4,9 +4,11 @@ import pandas as pd
 
 from utils import fit_func, plot_func
 
-data_path = '/home/avni1alon/alon/Lab/yalab/data/'
-file_path = data_path + 'water_experiment_1_bach_2.csv' # alon
-# file_path = '..\\Results\\14.5.2020\\exp2.csv'
+SAVE_PLOTS = False
+
+# data_path = '/home/avni1alon/alon/Lab/yalab/data/'
+# file_path = data_path + 'water_experiment_1_bach_2.csv' # alon
+file_path = '..\\Results\\14.5.2020\\exp2.csv'  # yonatan
 
 relevant_cols = 'A:D'
 header_row = 1
@@ -34,12 +36,12 @@ plot_func(fitted_func, time_range, c='k', linestyle='dashed', label=fitted_data_
 
 plt.xlabel('Time[s]')
 plt.ylabel('Temperature[$\degree$C]')
-plt.title('T(t) while heating plate is turned on')
+plt.title('T(t) while heating plate is turned off')
 plt.legend()
-plt.savefig(data_path + 'T(t) while heating plate is turned on.png')
+if SAVE_PLOTS:
+    plt.savefig(data_path + 'T(t) while heating plate is turned off.png')
 
-
-plt.figure('')
+plt.figure()
 temp_error = experiment_data.temp - fitted_func(experiment_data.time)
 
 plt.scatter(experiment_data.time, temp_error)
@@ -49,7 +51,8 @@ plt.gca().set_axisbelow(True)
 plt.title('T(t) residuals plot')
 plt.xlabel('Time[s]')
 plt.ylabel('Temperature Error[$\degree$C]')
-plt.savefig(data_path + 'T(t) residuals plot.png')
+if SAVE_PLOTS:
+    plt.savefig(data_path + 'T(t) residuals plot.png')
 
-#plt.show()
-print('Done!    ')
+plt.show()
+print('Done!')
