@@ -6,21 +6,20 @@ from utils import fit_func, plot_func
 
 # configuration constants
 SAVE_PLOTS = False
-MEASURE_ROOM_TEMP = False
+MEASURE_ROOM_TEMP = True
 
 # data_path = '/home/avni1alon/alon/Lab/yalab/data/'
 # file_path = data_path + 'water_experiment_1_bach_2.csv' # alon
-file_path = '..\\Results\\14.5.2020\\exp2.csv'  # yonatan
+file_path = '..\\Results\\18.5.2020\\exp2 - cooling over night.csv'  # yonatan
 
 relevant_cols = 'A:D'
 header_row = 1
 
+data_cols = ['Time (s)', 'Temperature (C)']
+col_variable_names = {'Time (s)': 'time', 'Temperature (C)': 'temp'}
 if MEASURE_ROOM_TEMP:
-    data_cols = ['Time (s)', 'Temperature1 (C)', 'Temperature2 (C)']
-    col_variable_names = {'Time (s)': 'time', 'Temperature1 (C)': 'temp', 'Temperature2 (C)': 'room_temp'}
-else:
-    data_cols = ['Time (s)', 'Temperature (C)']
-    col_variable_names = {'Time (s)': 'time', 'Temperature (C)': 'temp'}
+    data_cols.append('Temperature2')
+    col_variable_names['Temperature2'] = 'room_temp'
 
 experiment_data = pd.read_csv(file_path, header=header_row - 1, usecols=data_cols).rename(columns=col_variable_names)
 
