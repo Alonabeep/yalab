@@ -4,9 +4,11 @@ import seaborn as sns
 
 from utils import plot_line, fit_func
 
+SAVE_PLOTS = False
+
 data_path = '/home/avni1alon/alon/Lab/yalab/data/'
-file_path = data_path + 'water_experiment_1_bach_2.csv' # alon
-#file_path = '..\\Results\\13.5.2020\\ex1 grouped - 13.5.2020.csv'  # yonatan
+file_path = data_path + 'water_experiment_1_bach_2.csv'  # alon
+# file_path = '..\\Results\\13.5.2020\\ex1 grouped - 13.5.2020.csv'  # yonatan
 
 relevant_cols = 'A:D'
 header_row = 1
@@ -33,8 +35,8 @@ plt.title('Height over time')
 plt.ylabel('Distance from sonar[m]')
 plt.xlabel('Time[s]')
 plt.legend()
-plt.savefig(data_path + 'Height over time.png')
-
+if SAVE_PLOTS:
+    plt.savefig(data_path + 'Height over time.png')
 
 # normalize the position
 experiment_data['delta_h'] = 0.125 - experiment_data.pos
@@ -66,8 +68,8 @@ plt.title('Linear fit to part of height over time data')
 plt.ylabel('$\Delta$h[m]')
 plt.xlabel('Time[s]')
 plt.legend()
-plt.savefig(data_path + 'Linear fit to part of height over time data.png')
-
+if SAVE_PLOTS:
+    plt.savefig(data_path + 'Linear fit to part of height over time data.png')
 
 plt.figure('Residuals plot')
 sns.residplot(linear_fit_data.time, linear_fit_data.delta_h)
@@ -75,8 +77,8 @@ sns.residplot(linear_fit_data.time, linear_fit_data.delta_h)
 plt.title('Residuals plot for linear fit')
 plt.ylabel('$\Delta$h error[m]')
 plt.xlabel('Time[s]')
-plt.savefig(data_path + 'Residuals plot.png')
+if SAVE_PLOTS:
+    plt.savefig(data_path + 'Residuals plot.png')
 
-
-# plt.show()
+plt.show()
 print('Done!')
