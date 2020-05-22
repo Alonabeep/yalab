@@ -5,12 +5,13 @@ import seaborn as sns
 from utils import plot_line, fit_func
 
 SAVE_PLOTS = False
+SHOW_CAMERA_HEIGHT = False
 WATER_INIT_HEIGHT = 0.126
 
 # data_path = '/home/avni1alon/alon/Lab/yalab/data/'
-data_path = 'data\\'
-file_path = data_path + 'water_experiment_1_bach_2.csv'  # alon
-# file_path = '..\\Results\\13.5.2020\\ex1 grouped - 13.5.2020.csv'  # yonatan
+# data_path = 'data\\'
+# file_path = data_path + 'water_experiment_1_bach_2.csv'  # alon
+file_path = '..\\Results\\20.5.2020\\ex1.csv'  # yonatan
 
 relevant_cols = 'A:D'
 header_row = 1
@@ -44,7 +45,7 @@ if SAVE_PLOTS:
 experiment_data['water_height'] = WATER_INIT_HEIGHT + experiment_data.pos.iloc[:200].mean() - experiment_data.pos
 
 # linear fit for position over time
-start_fit_time = 5000  # [s]
+start_fit_time = 3000  # [s]
 
 linear_fit_data = experiment_data[experiment_data.time > start_fit_time]
 
@@ -65,12 +66,13 @@ plot_line(slope, intercept, x_range=[start_fit_time, end_time], fig=fig_name, pl
           zorder=12)
 
 # add camera dots
-camera_water_height = [0.125, 0.125, 0.125, 0.1225, 0.12, 0.115, 0.11, 0.10625, 0.1025, 0.1, 0.09, 0.0875, 0.085,
-                       0.08375, 0.0825]
-camera_time = [0, 1800, 3600, 5400, 7200, 9000, 10800, 12600, 14400, 16200, 18000, 19800, 21600, 23400,
-               25200]
+if SHOW_CAMERA_HEIGHT:
+    camera_water_height = [0.125, 0.125, 0.125, 0.1225, 0.12, 0.115, 0.11, 0.10625, 0.1025, 0.1, 0.09, 0.0875, 0.085,
+                           0.08375, 0.0825]
+    camera_time = [0, 1800, 3600, 5400, 7200, 9000, 10800, 12600, 14400, 16200, 18000, 19800, 21600, 23400,
+                   25200]
 
-plt.scatter(camera_time, camera_water_height, label='Camera Data', color='m', marker='x', zorder=5)
+    plt.scatter(camera_time, camera_water_height, label='Camera Data', color='m', marker='x', zorder=5)
 
 plt.title('Linear fit to part of height over time data')
 plt.ylabel('Height of Water[m]')
