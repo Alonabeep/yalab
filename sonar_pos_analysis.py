@@ -17,7 +17,6 @@ plt.figure('sonar position')
 experiment_data = pd.read_csv(file_path, header=header_row - 1,
                               usecols=['Time (s)', 'Position (m)', 'Temperature (C)']) \
     .rename(columns={'Time (s)': 'time', 'Position (m)': 'pos', 'Temperature (C)': 'temp'})
-
 axes = plt.gca()
 
 ## plot real data
@@ -39,7 +38,7 @@ if SAVE_PLOTS:
     plt.savefig(data_path + 'Height over time.png')
 
 # normalize the position
-experiment_data['delta_h'] = 0.125 - experiment_data.pos
+experiment_data['real_h'] = experiment_data.pos - 0.033
 
 # linear fit for position over time
 start_fit_time = 5000  # [s]
@@ -47,7 +46,7 @@ start_fit_time = 5000  # [s]
 linear_fit_data = experiment_data[experiment_data.time > start_fit_time]
 
 linear_func = lambda t, a, b: a * t + b
-[slope, intercept], errors = fit_func(linear_func, linear_fit_data.time, linear_fit_data.delta_h)
+[slope, intercept], errors = fit_func(linear_func, linear_fit_data.time, linear_fit_data.real_h)
 print(slope, intercept, errors)
 
 end_time = linear_fit_data.time.max()
@@ -56,13 +55,18 @@ end_time = linear_fit_data.time.max()
 fig_name = 'Linear fit to data'
 plt.figure(fig_name)
 axes = plt.gca()
-experiment_data.plot(x='time', y='delta_h', label='Experimental data', grid=True, ax=axes, marker='.',
+experiment_data.plot(x='time', y='real_h', label='Experimental data', grid=True, ax=axes, marker='.',
                      linestyle='None')
-plt.errorbar(experiment_data.time, experiment_data.delta_h, experiment_data.pos_error, alpha=0.1, capsize=2,
+plt.errorbar(experiment_data.time, experiment_data.real_h, experiment_data.pos_error, alpha=0.1, capsize=2,
              ecolor='r')
 fit_label = f'Linear fit\n({slope:.2e}$\pm${errors[0]:.2e})t+{intercept:.2e}$\pm${errors[1]:.2e}'
 plot_line(slope, intercept, x_range=[start_fit_time, end_time], fig=fig_name, plot_axes=False, label=fit_label, c='k',
           zorder=12)
+
+# add camera dots
+experiment_data['c_pos'] = [0.125,0.125,0.125,0.1225,0.12,0.115,0.11,0.10625,0.1025,0.1,0.09,0.0875,0.085,0.08375,0.0825]
+experiment_data['c_time'] = [0,1800,3600,5400,7200,9000,10800,12600,14400,16200,18000,19800,21600,23400,25200]
+experiment_data.plot.scatter(x='c_time', y='c_pos', style=['o', 'rx'], s=12)
 
 plt.title('Linear fit to part of height over time data')
 plt.ylabel('$\Delta$h[m]')
@@ -72,7 +76,7 @@ if SAVE_PLOTS:
     plt.savefig(data_path + 'Linear fit to part of height over time data.png')
 
 plt.figure('Residuals plot')
-sns.residplot(linear_fit_data.time, linear_fit_data.delta_h)
+sns.residplot(linear_fit_data.time, linear_fit_data.real_h)
 
 plt.title('Residuals plot for linear fit')
 plt.ylabel('$\Delta$h error[m]')
@@ -80,5 +84,5 @@ plt.xlabel('Time[s]')
 if SAVE_PLOTS:
     plt.savefig(data_path + 'Residuals plot.png')
 
-plt.show()
+# plt.show()
 print('Done!')
