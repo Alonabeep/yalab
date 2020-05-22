@@ -6,7 +6,7 @@ from utils import plot_line, fit_func
 
 SAVE_PLOTS = False
 SHOW_CAMERA_HEIGHT = False
-WATER_INIT_HEIGHT = 0.126
+WATER_INIT_HEIGHT = 0.126  # [m]
 
 # data_path = '/home/avni1alon/alon/Lab/yalab/data/'
 # data_path = 'data\\'
