@@ -5,19 +5,24 @@ from utils import fit_func, plot_func
 
 
 def plot_cooling_time(exp_data, axes, plot_delta_temp=False, fit_func_to_data=False, end_temp=25, start_time=0,
-                      save_plots=False, data_path=None):
+                      save_plots=False, data_path=None, log_plot=False, temp_label=False, func_linestyle='--'):
     # assuming that temperature doesn't rise later...
     relevant_data = exp_data[(exp_data.temp > end_temp) & (exp_data.time > start_time)]
     relevant_data.time -= start_time
 
     if plot_delta_temp:
-        relevant_data['delta_temp'] = relevant_data.temp - relevant_data.room_temp
+        relevant_data['delta_temp'] = relevant_data.temp - (relevant_data.room_temp
+                                                            if 'room_temp' in relevant_data.columns else end_temp)
         temp_to_analyze = 'delta_temp'
     else:
         temp_to_analyze = 'temp'
 
-    relevant_data.plot(x='time', y=temp_to_analyze, marker='.', linestyle='None', label='Experimental Data', grid=True,
-                       logy=plot_delta_temp, ax=axes)
+    if temp_label:
+        data_label = f'{round(relevant_data.temp.iat[0]):.0f}$\degree$ initial temperature data'
+    else:
+        data_label = 'Experimental data'
+    relevant_data.plot(x='time', y=temp_to_analyze, marker='.', linestyle='None', label=data_label, grid=True,
+                       logy=log_plot, ax=axes)
 
     if fit_func_to_data:
         # fit func and plot results
@@ -29,7 +34,7 @@ def plot_cooling_time(exp_data, axes, plot_delta_temp=False, fit_func_to_data=Fa
         time_range = [relevant_data.time.min(), relevant_data.time.max()]
         fitted_data_label = 'Function fitted to data \n' \
             f'T(t)=({amplitude:.2f}$\pm${errors[0]:.2f})exp(-t/({decay_time:.0f}$\pm${errors[1]:.0f}))+{end_temp}'
-        plot_func(fitted_func, time_range, c='k', linestyle='dashed', label=fitted_data_label)
+        plot_func(fitted_func, time_range, c='k', linestyle=func_linestyle, label=fitted_data_label)
 
         plot_temp_prefix = '$\Delta$' if plot_delta_temp else ''
         axes.set_xlabel('Time[s]')

@@ -5,7 +5,7 @@ import pandas as pd
 from sonar_pos_analysis import plot_water_height_data, get_real_water_height, smoothen_height_data, \
     plot_basic_height_data
 from temp_pos_analysis import plot_temp_over_time_data
-from temperature_analysis import plot_room_temp
+from cooling_temperature_analysis import plot_room_temp, plot_cooling_time
 
 DEFAULT_FILE_PATH = '..\\Results\\18.5.2020\\exp2 - cooling over night.csv'  # yonatan
 
@@ -13,12 +13,16 @@ DEFAULT_HEADER_ROW = 1
 ROOM_TEMP = 23.8
 
 
-def read_experiment_data(file_path=DEFAULT_FILE_PATH, header_row=DEFAULT_HEADER_ROW, measure_room_temp=False):
+def read_experiment_data(file_path=DEFAULT_FILE_PATH, header_row=DEFAULT_HEADER_ROW, measure_room_temp=False,
+                         cooling_measurement=False):
     data_cols = ['Time (s)', 'Temperature (C)', 'Position (m)']
     col_variable_names = {'Time (s)': 'time', 'Temperature (C)': 'temp', 'Position (m)': 'pos'}
     if measure_room_temp:
         data_cols.append('Temperature2')
         col_variable_names['Temperature2'] = 'room_temp'
+    if cooling_measurement:
+        data_cols.remove('Position (m)')
+        col_variable_names.pop('Position (m)')
 
     experiment_data = pd.read_csv(file_path, header=header_row - 1, usecols=data_cols) \
         .rename(columns=col_variable_names)
@@ -113,14 +117,35 @@ def plot_cooling_and_heating_times(cooling_data_path, heating_data_path, min_tim
     plt.show()
 
 
+def plot_cooling_graphs_on_same_plot(experiments_data_paths, END_TEMP=25):
+    plt.figure()
+    axes = plt.gca()
+
+    linestyles = ['--', ':', '-.']
+    for data_path in experiments_data_paths:
+        exp_data = read_experiment_data(data_path, cooling_measurement=True)
+
+        plot_cooling_time(exp_data, axes, plot_delta_temp=True, log_plot=True, end_temp=END_TEMP, fit_func_to_data=True,
+                          temp_label=True, func_linestyle=linestyles.pop(0))
+
+    plt.xlabel('Time[s]')
+    plt.ylabel(f'Water temperature -{END_TEMP}$\degree$[$\degree$C]')
+    plt.show()
+
+
 if __name__ == '__main__':
     # plot_cooling_and_heating_times(DEFAULT_FILE_PATH, '..\\Results\\18.5.2020\\exp1 - last run only.csv')
 
     # plot_single_experiment(DEFAULT_FILE_PATH)
 
-    experiments_data = [('..\\Results\\13.5.2020\\ex1 grouped - 13.5.2020.csv', 0),
-                        ('..\\Results\\18.5.2020\\exp1 - last run only.csv', 2100),
-                        ('..\\Results\\20.5.2020\\ex1.csv', 0)]
-
+    # experiments_data = [('..\\Results\\13.5.2020\\ex1 grouped - 13.5.2020.csv', 0),
+    #                     ('..\\Results\\18.5.2020\\exp1 - last run only.csv', 2100),
+    #                     ('..\\Results\\20.5.2020\\ex1.csv', 0)]
+    #
     # compare_several_experiments_temperature(experiments_data)
-    compare_several_experiments_height(experiments_data)
+    # compare_several_experiments_height(experiments_data)
+
+    cooling_experiments_data = ['..\\Results\\18.5.2020\\exp2 - cooling over night.csv',
+                                '..\\Results\\14.5.2020\\exp2.csv']
+
+    plot_cooling_graphs_on_same_plot(cooling_experiments_data)
