@@ -20,11 +20,21 @@ def read_experiment_data(file_path=DEFAULT_FILE_PATH, header_row=DEFAULT_HEADER_
 if __name__ == '__main__':
     exp_data = read_experiment_data()
 
-    fig, axs = plt.subplots(2)
+    temp_amplitude = exp_data.temp.max() - exp_data.temp.min()
+    # start the linear fit only when the temperature reaches its 90th percentile
+    temp_start_fit_threshold = exp_data.temp.min() + 0.9 * temp_amplitude
+    start_fit_time = exp_data.time[exp_data.temp > temp_start_fit_threshold].iat[0]
+
+    fig, axs = plt.subplots(2, sharex=True)
 
     get_real_water_height(exp_data)
-    plot_water_height_data(exp_data, axs[0], fit_func_to_data=True)
+    plot_water_height_data(exp_data, axs[0], fit_func_to_data=True, start_fit_time=start_fit_time)
 
     plot_temp_over_time_data(exp_data, axs[1])
+
+    # make them have the same x axis
+    plt.subplots_adjust(hspace=0)
+    for ax in axs:
+        ax.set_title('')
 
     plt.show()
