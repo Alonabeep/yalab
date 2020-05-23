@@ -1,9 +1,8 @@
+import matplotlib.pyplot as plt
 import pandas as pd
 
-import matplotlib.pyplot as plt
-
-from temp_pos_analysis import read_experiment_data as plot_temp_over_time_data
 from sonar_pos_analysis import plot_water_height_data, get_real_water_height
+from temp_pos_analysis import plot_temp_over_time_data
 
 DEFAULT_FILE_PATH = '..\\Results\\20.5.2020\\ex1.csv'  # yonatan
 
@@ -25,5 +24,7 @@ if __name__ == '__main__':
 
     get_real_water_height(exp_data)
     plot_water_height_data(exp_data, axs[0], fit_func_to_data=True)
+
+    plot_temp_over_time_data(exp_data, axs[1])
 
     plt.show()
