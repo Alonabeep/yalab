@@ -10,7 +10,7 @@ DEFAULT_HEADER_ROW = 1
 
 
 def plot_temp_over_time_data(exp_data, axes, fit_func_to_data=True, start_fit_time=0, temp_amplitude=None,
-                             start_fit_temp=None, linearize=False):
+                             start_fit_temp=None, linearize=False, ylabel=None):
     fit_data = exp_data[exp_data.time > start_fit_time]
     if start_fit_temp is None:
         start_fit_temp = fit_data.temp.iat[0]
@@ -41,6 +41,9 @@ def plot_temp_over_time_data(exp_data, axes, fit_func_to_data=True, start_fit_ti
                   marker='.', label='Experimental data', ax=axes)
     axes.legend()
     axes.set_xlabel('Time[s]')
+    axes.set_ylabel('Temperature[$\degree$C]' if ylabel is None else ylabel)
+    axes.set_title('T(t) while heating plate is turned on')
+
     if linearize:
         axes.set_xticks([])
         max_tick_time = round(decay_time * 2, -2)
@@ -50,6 +53,3 @@ def plot_temp_over_time_data(exp_data, axes, fit_func_to_data=True, start_fit_ti
                                              np.linspace(0, max_tick_time,
                                                          num=int(max_tick_time / tick_time_interval))])
         plt.xticks(unnormalized_time, real_time)
-
-        axes.set_ylabel('Temperature[$\degree$C]')
-        axes.set_title('T(t) while heating plate is turned on')

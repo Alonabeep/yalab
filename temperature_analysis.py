@@ -1,6 +1,5 @@
 import matplotlib.pyplot as plt
 import numpy as np
-import pandas as pd
 
 from utils import fit_func, plot_func
 
@@ -39,6 +38,14 @@ def plot_cooling_time(exp_data, axes, plot_delta_temp=False, fit_func_to_data=Fa
         axes.legend()
         if save_plots:
             plt.savefig(data_path + plot_temp_prefix + 'T(t) while heating plate is turned off.png')
+
+
+def plot_room_temp(exp_data, axes, ylabel=None, **kwargs):
+    exp_data.plot(x='time', y='room_temp', ax=axes, linestyle='None', label='Room temperature', grid=True, **kwargs)
+
+    axes.set_xlabel('Time[s]')
+    axes.set_ylabel('Temperature[$\degree$C]' if ylabel is None else ylabel)
+    axes.set_title('Room temperature over time')
 
 # TODO: create function
 # plt.figure()
