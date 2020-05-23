@@ -7,6 +7,7 @@ from temp_pos_analysis import plot_temp_over_time_data
 DEFAULT_FILE_PATH = '..\\Results\\20.5.2020\\ex1.csv'  # yonatan
 
 DEFAULT_HEADER_ROW = 1
+ROOM_TEMP = 23.8
 
 
 def read_experiment_data(file_path=DEFAULT_FILE_PATH, header_row=DEFAULT_HEADER_ROW):
@@ -44,9 +45,15 @@ def compare_several_experiments_temperature(experiments_data_paths):
     plt.figure('Raw Data')
     raw_axes = plt.gca()
 
-    for data_path in experiments_data_paths:
+    for data_path, time_offset in experiments_data_paths:
         exp_data = read_experiment_data(data_path)
-        plot_temp_over_time_data(exp_data, raw_axes)
+        exp_data.time += time_offset
+
+        if time_offset > 0:
+            temp_amplitude = exp_data.temp.max() - ROOM_TEMP
+            plot_temp_over_time_data(exp_data, raw_axes, temp_amplitude=temp_amplitude, start_fit_temp=ROOM_TEMP)
+        else:
+            plot_temp_over_time_data(exp_data, raw_axes)
 
     plt.show()
 
@@ -54,8 +61,8 @@ def compare_several_experiments_temperature(experiments_data_paths):
 if __name__ == '__main__':
     # plot_single_experiment(DEFAULT_FILE_PATH)
 
-    experiments_data = ['..\\Results\\13.5.2020\\ex1 grouped - 13.5.2020.csv',
-                        '..\\Results\\18.5.2020\\exp1 - last run only.csv',
-                        '..\\Results\\20.5.2020\\ex1.csv']
+    experiments_data = [('..\\Results\\13.5.2020\\ex1 grouped - 13.5.2020.csv', 0),
+                        ('..\\Results\\18.5.2020\\exp1 - last run only.csv', 2100),
+                        ('..\\Results\\20.5.2020\\ex1.csv', 0)]
 
     compare_several_experiments_temperature(experiments_data)
