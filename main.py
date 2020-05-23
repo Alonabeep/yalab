@@ -17,8 +17,8 @@ def read_experiment_data(file_path=DEFAULT_FILE_PATH, header_row=DEFAULT_HEADER_
     return experiment_data
 
 
-if __name__ == '__main__':
-    exp_data = read_experiment_data()
+def plot_single_experiment(data_path):
+    exp_data = read_experiment_data(data_path)
 
     temp_amplitude = exp_data.temp.max() - exp_data.temp.min()
     # start the linear fit only when the temperature reaches its 90th percentile
@@ -38,3 +38,27 @@ if __name__ == '__main__':
         ax.set_title('')
 
     plt.show()
+
+
+def compare_several_experiments_temperature(experiments_data_paths):
+    plt.figure('Raw Data')
+    raw_axes = plt.gca()
+    plt.figure('Linearized Data')
+    linearized_axes = plt.gca()
+
+    for data_path in experiments_data_paths:
+        exp_data = read_experiment_data(data_path)
+        plot_temp_over_time_data(exp_data, raw_axes)
+        plot_temp_over_time_data(exp_data, linearized_axes, fit_func_to_data=True, linearize=True)
+
+    plt.show()
+
+
+if __name__ == '__main__':
+    # plot_single_experiment(DEFAULT_FILE_PATH)
+
+    experiments_data = ['..\\Results\\13.5.2020\\ex1 grouped - 13.5.2020.csv',
+                        '..\\Results\\18.5.2020\\exp1 - last run only.csv',
+                        '..\\Results\\20.5.2020\\ex1.csv']
+
+    compare_several_experiments_temperature(experiments_data)
