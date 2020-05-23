@@ -50,9 +50,15 @@ def get_real_water_height(exp_data, initial_height=WATER_INIT_HEIGHT):
 
 
 def plot_water_height_data(exp_data, axes, fit_func_to_data=False, start_fit_time=3000, show_camera_height=False,
-                           plot_residuals=False, residuales_axes=None, save_plots=False, img_path=None, **kwargs):
-    exp_data.plot(x='time', y='water_height', label='Experimental data', grid=True, ax=axes, linestyle='None',
-                  alpha=0.7, **kwargs)
+                           plot_residuals=False, residuales_axes=None, save_plots=False, img_path=None, fit_line=None,
+                           label_fit=False, temp_label=False, **kwargs):
+    if temp_label:
+        measurement_stable_temp = round(exp_data.temp.quantile(0.6))
+        data_label = f'{measurement_stable_temp:.0f}$\degree$C measurement data'
+    else:
+        data_label = 'Experimental data'
+    exp_data.plot(x='time', y='water_height', label=data_label, grid=True, ax=axes, linestyle='None', alpha=0.7,
+                  **kwargs)
 
     if fit_func_to_data:
         # linear fit for position over time from a certain point
@@ -65,9 +71,12 @@ def plot_water_height_data(exp_data, axes, fit_func_to_data=False, start_fit_tim
         end_time = linear_fit_data.time.max()
 
         # plot linear fit
-        fit_label = f'Linear fit\n({slope:.2e}$\pm${errors[0]:.2e})t+{intercept:.2e}$\pm${errors[1]:.2e}'
+        if label_fit:
+            fit_label = f'Linear fit\n({slope:.2e}$\pm${errors[0]:.2e})t+{intercept:.2e}$\pm${errors[1]:.2e}'
+        else:
+            fit_label = None
         plot_line(slope, intercept, x_range=[start_fit_time, end_time], axes=axes, plot_axes=False, label=fit_label,
-                  c='k', zorder=12)
+                  c='k', zorder=12, linestyle='-' if fit_line is None else fit_line)
 
     # add camera dots
     if show_camera_height:

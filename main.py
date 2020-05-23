@@ -75,13 +75,15 @@ def compare_several_experiments_height(experiments_data_paths):
 
     markers = ['o', 'x', '+']
     colors = ['b', 'g', 'orange']
+    fit_line = ['--', '-.', ':']
     # ignore time offset because all of them started at same height
     for data_path, time_offset in experiments_data_paths:
         exp_data = read_experiment_data(data_path)
 
         get_real_water_height(exp_data)
 
-        plot_water_height_data(exp_data, axes, fit_func_to_data=True, c=colors.pop(0), marker=markers.pop(0))
+        plot_water_height_data(exp_data, axes, fit_func_to_data=True, c=colors.pop(0), marker=markers.pop(0),
+                               fit_line=fit_line.pop(0), label_fit=False, temp_label=True)
 
     plt.show()
 
