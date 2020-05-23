@@ -25,8 +25,9 @@ def plot_func(func, x_range, **kwargs):
     plt.plot(x, func(x), **kwargs)
 
 
-def plot_line(slope, intercept, fig, x_range=None, plot_axes=True, **kwargs):
-    plt.figure(fig)
+def plot_line(slope, intercept, fig=None, x_range=None, plot_axes=True, **kwargs):
+    if fig is not None:
+        plt.figure(fig)
     plot_func(lambda x: slope * x + intercept, x_range, **kwargs)
     if plot_axes:
         plt.axhline(0, c='k')
