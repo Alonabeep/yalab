@@ -19,14 +19,21 @@ def smoothen_height_data(exp_data, rolling_window_size=30):
     exp_data['smoothened_pos'] = exp_data.pos.rolling(window=rolling_window_size, center=True).mean()
 
 
-def plot_basic_height_data(exp_data, axes, plot_raw=True, plot_smoothened=True, save_plot=False, img_path=None):
+def plot_basic_height_data(exp_data, axes, plot_raw=True, plot_smoothened=True, save_plot=False, img_path=None,
+                           temp_label=False):
     if plot_raw:
         exp_data.plot(x='time', y='pos', label='Raw position data', ax=axes, linestyle='None', marker='.')
 
     if plot_smoothened:
         assert 'smoothened_pos' in exp_data.columns, 'Error: data has not been smoothened!'
 
-        exp_data.plot(x='time', y='smoothened_pos', label='Smoothened position data', ax=axes, grid=True,
+        if temp_label:
+            measurement_temp = round(exp_data.temp.quantile(0.6))
+            smoothened_label = f'{measurement_temp:.0f}$\degree$C measurement data'
+        else:
+            smoothened_label = 'Smoothened position data'
+
+        exp_data.plot(x='time', y='smoothened_pos', label=smoothened_label, ax=axes, grid=True,
                       linestyle='None', marker='x')
 
     plot_title = 'Height over time'
@@ -43,9 +50,9 @@ def get_real_water_height(exp_data, initial_height=WATER_INIT_HEIGHT):
 
 
 def plot_water_height_data(exp_data, axes, fit_func_to_data=False, start_fit_time=3000, show_camera_height=False,
-                           plot_residuals=False, residuales_axes=None, save_plots=False, img_path=None):
-    exp_data.plot(x='time', y='water_height', label='Experimental data', grid=True, ax=axes, marker='.',
-                  linestyle='None', alpha=0.7)
+                           plot_residuals=False, residuales_axes=None, save_plots=False, img_path=None, **kwargs):
+    exp_data.plot(x='time', y='water_height', label='Experimental data', grid=True, ax=axes, linestyle='None',
+                  alpha=0.7, **kwargs)
 
     if fit_func_to_data:
         # linear fit for position over time from a certain point
