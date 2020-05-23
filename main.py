@@ -101,10 +101,10 @@ def plot_cooling_and_heating_times(cooling_data_path, heating_data_path, min_tim
     for ax in axs:
         ax.get_legend().remove()
         ax.set_title('')
-
-    for ax in axs:
         for t in range(min_time, max_time, 1250):
             ax.axvline(t, c='k', linestyle='--')
+
+    axs[0].set_title('Comparison between room and water temperature fluctuations')
 
     plt.show()
 
