@@ -1,10 +1,11 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from sonar_pos_analysis import plot_water_height_data, get_real_water_height
+from sonar_pos_analysis import plot_water_height_data, get_real_water_height, smoothen_height_data, \
+    plot_basic_height_data
 from temp_pos_analysis import plot_temp_over_time_data
 
-DEFAULT_FILE_PATH = '..\\Results\\20.5.2020\\ex1.csv'  # yonatan
+DEFAULT_FILE_PATH = '..\\Results\\18.5.2020\\exp1 - last run only.csv'  # yonatan
 
 DEFAULT_HEADER_ROW = 1
 ROOM_TEMP = 23.8
@@ -30,6 +31,9 @@ def plot_single_experiment(data_path):
 
     get_real_water_height(exp_data)
     plot_water_height_data(exp_data, axs[0], fit_func_to_data=True, start_fit_time=start_fit_time)
+
+    # smoothen_height_data(exp_data)
+    # plot_basic_height_data(exp_data, axs[0])
 
     plot_temp_over_time_data(exp_data, axs[1])
 
