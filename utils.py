@@ -20,15 +20,18 @@ def plot_region(low_func, upper_func, x_range):
     plt.fill_between(x, low_func(x), upper_func(x), facecolor='m', alpha=0.2)
 
 
-def plot_func(func, x_range, **kwargs):
+def plot_func(func, x_range, axes=None, **kwargs):
     x = np.linspace(x_range[0], x_range[1], 100)
-    plt.plot(x, func(x), **kwargs)
+    if axes is None:
+        plt.plot(x, func(x), **kwargs)
+    else:
+        axes.plot(x, func(x), **kwargs)
 
 
-def plot_line(slope, intercept, fig=None, x_range=None, plot_axes=True, **kwargs):
+def plot_line(slope, intercept, fig=None, axes=None, x_range=None, plot_axes=True, **kwargs):
     if fig is not None:
         plt.figure(fig)
-    plot_func(lambda x: slope * x + intercept, x_range, **kwargs)
+    plot_func(lambda x: slope * x + intercept, x_range, axes=axes, **kwargs)
     if plot_axes:
         plt.axhline(0, c='k')
         plt.axvline(0, c='k')

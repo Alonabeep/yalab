@@ -27,7 +27,7 @@ def smoothen_height_data(exp_data, rolling_window_size=30):
     exp_data['smoothened_pos'] = exp_data.pos.rolling(window=rolling_window_size, center=True).mean()
 
 
-def plot_height_data(exp_data, axes, plot_raw=True, plot_smoothened=True, save_plot=False, img_path=None):
+def plot_basic_height_data(exp_data, axes, plot_raw=True, plot_smoothened=True, save_plot=False, img_path=None):
     if plot_raw:
         exp_data.plot(x='time', y='pos', label='Raw position data', ax=axes, linestyle='None', marker='.')
 
@@ -47,7 +47,7 @@ def plot_height_data(exp_data, axes, plot_raw=True, plot_smoothened=True, save_p
 
 
 def get_real_water_height(exp_data, initial_height=WATER_INIT_HEIGHT):
-    exp_data['water_height'] = initial_height + exp_data.pos.iloc[:200].mean() - initial_height.pos
+    exp_data['water_height'] = initial_height + exp_data.pos.iloc[:200].mean() - exp_data.pos
 
 
 def plot_water_height_data(exp_data, axes, fit_func_to_data=False, start_fit_time=3000, show_camera_height=False,
@@ -67,7 +67,7 @@ def plot_water_height_data(exp_data, axes, fit_func_to_data=False, start_fit_tim
 
         # plot linear fit
         fit_label = f'Linear fit\n({slope:.2e}$\pm${errors[0]:.2e})t+{intercept:.2e}$\pm${errors[1]:.2e}'
-        plot_line(slope, intercept, x_range=[start_fit_time, end_time], ax=axes, plot_axes=False, label=fit_label,
+        plot_line(slope, intercept, x_range=[start_fit_time, end_time], axes=axes, plot_axes=False, label=fit_label,
                   c='k', zorder=12)
 
     # add camera dots
@@ -80,18 +80,18 @@ def plot_water_height_data(exp_data, axes, fit_func_to_data=False, start_fit_tim
 
         plt.scatter(camera_time, camera_water_height, label='Camera Data', color='m', marker='x', zorder=5)
 
-    plt.title('Water height over time')
-    plt.ylabel('Height of Water[m]')
-    plt.xlabel('Time[s]')
-    plt.legend()
+    axes.set_title('Water height over time')
+    axes.set_ylabel('Height of Water[m]')
+    axes.set_xlabel('Time[s]')
+    axes.legend()
     if save_plots:
-        plt.savefig(f'{img_path}Linear fit to part of height over time data.png')
+        axes.savefig(f'{img_path}Linear fit to part of height over time data.png')
 
     if plot_residuals:
         sns.residplot(linear_fit_data.time, linear_fit_data.water_height, ax=residuales_axes)
 
-        plt.title('Residuals plot for linear fit')
-        plt.ylabel('$\Delta$h error[m]')
-        plt.xlabel('Time[s]')
+        residuales_axes.set_title('Residuals plot for linear fit')
+        residuales_axes.set_ylabel('$\Delta$h error[m]')
+        residuales_axes.set_xlabel('Time[s]')
         if save_plots:
-            plt.savefig(f'{img_path}Residuals plot.png')
+            residuales_axes.savefig(f'{img_path}Residuals plot.png')
