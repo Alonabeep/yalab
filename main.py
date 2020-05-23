@@ -14,8 +14,8 @@ ROOM_TEMP = 23.8
 
 
 def read_experiment_data(file_path=DEFAULT_FILE_PATH, header_row=DEFAULT_HEADER_ROW, measure_room_temp=False):
-    data_cols = ['Time (s)', 'Temperature (C)']
-    col_variable_names = {'Time (s)': 'time', 'Temperature (C)': 'temp'}
+    data_cols = ['Time (s)', 'Temperature (C)', 'Position (m)']
+    col_variable_names = {'Time (s)': 'time', 'Temperature (C)': 'temp', 'Position (m)': 'pos'}
     if measure_room_temp:
         data_cols.append('Temperature2')
         col_variable_names['Temperature2'] = 'room_temp'
@@ -110,13 +110,13 @@ def plot_cooling_and_heating_times(cooling_data_path, heating_data_path, min_tim
 
 
 if __name__ == '__main__':
-    plot_cooling_and_heating_times(DEFAULT_FILE_PATH, '..\\Results\\18.5.2020\\exp1 - last run only.csv')
+    # plot_cooling_and_heating_times(DEFAULT_FILE_PATH, '..\\Results\\18.5.2020\\exp1 - last run only.csv')
 
     # plot_single_experiment(DEFAULT_FILE_PATH)
 
-    # experiments_data = [('..\\Results\\13.5.2020\\ex1 grouped - 13.5.2020.csv', 0),
-    #                     ('..\\Results\\18.5.2020\\exp1 - last run only.csv', 2100),
-    #                     ('..\\Results\\20.5.2020\\ex1.csv', 0)]
-    #
+    experiments_data = [('..\\Results\\13.5.2020\\ex1 grouped - 13.5.2020.csv', 0),
+                        ('..\\Results\\18.5.2020\\exp1 - last run only.csv', 2100),
+                        ('..\\Results\\20.5.2020\\ex1.csv', 0)]
+
     # compare_several_experiments_temperature(experiments_data)
-    # compare_several_experiments_height(experiments_data)
+    compare_several_experiments_height(experiments_data)
