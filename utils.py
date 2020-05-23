@@ -31,7 +31,7 @@ def plot_func(func, x_range, axes=None, **kwargs):
 def plot_line(slope, intercept, fig=None, axes=None, x_range=None, plot_axes=True, **kwargs):
     if fig is not None:
         plt.figure(fig)
-    plot_func(lambda x: slope * x + intercept, x_range, axes=axes, **kwargs)
+    plot_func(lambda x: slope * x + intercept, x_range, axes=axes if axes is not None else None, **kwargs)
     if plot_axes:
         plt.axhline(0, c='k')
         plt.axvline(0, c='k')
@@ -83,11 +83,12 @@ def plot_half_log_fit(R, T, fig, R_type):
     plt.ylabel('R[$\mathbb{\Omega}$]')
 
 
-def fit_and_plot_line(x, y, fig, x_range=None, plot_axes=False, c='k', linestyle='solid', linewidth=None, zorder=None):
+def fit_and_plot_line(x, y, fig, x_range=None, plot_axes=None, c='k', linestyle='solid', linewidth=None, zorder=None):
     [slope, intercept], errors = fit_line(x, y)
     if x_range is None:
         x_range = [min(x), max(x)]
-    plot_line(slope, intercept, fig, x_range, plot_axes, c=c, linestyle=linestyle, linewidth=linewidth, zorder=zorder)
+    plot_line(slope, intercept, fig, x_range=x_range, plot_axes=plot_axes, c=c, linestyle=linestyle,
+              linewidth=linewidth, zorder=zorder)
     return [slope, intercept], errors
 
 

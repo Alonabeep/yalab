@@ -57,7 +57,7 @@ def plot_water_height_data(exp_data, axes, fit_func_to_data=False, start_fit_tim
         data_label = f'{measurement_stable_temp:.0f}$\degree$C measurement data'
     else:
         data_label = 'Experimental data'
-    exp_data.plot(x='time', y='water_height', label=data_label, grid=True, ax=axes, linestyle='None', alpha=0.7,
+    exp_data.plot(x='time', y='water_height', label=data_label, grid=True, ax=axes, linestyle='None', alpha=0.4,
                   **kwargs)
 
     if fit_func_to_data:
