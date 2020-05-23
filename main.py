@@ -43,13 +43,10 @@ def plot_single_experiment(data_path):
 def compare_several_experiments_temperature(experiments_data_paths):
     plt.figure('Raw Data')
     raw_axes = plt.gca()
-    plt.figure('Linearized Data')
-    linearized_axes = plt.gca()
 
     for data_path in experiments_data_paths:
         exp_data = read_experiment_data(data_path)
         plot_temp_over_time_data(exp_data, raw_axes)
-        plot_temp_over_time_data(exp_data, linearized_axes, fit_func_to_data=True, linearize=True)
 
     plt.show()
 
