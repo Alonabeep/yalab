@@ -7,10 +7,9 @@ from utils import plot_line, fit_func
 SHOW_CAMERA_HEIGHT = False
 WATER_INIT_HEIGHT = 0.126  # [m]
 
-# DATA_PATH = '/home/avni1alon/alon/Lab/yalab/data/'
-# DATA_PATH = 'data\\'
-# DEFAULT_FILE_PATH = DATA_PATH + 'water_experiment_1_bach_2.csv'  # alon
-DEFAULT_FILE_PATH = '..\\Results\\20.5.2020\\ex1.csv'  # yonatan
+DATA_PATH = '/home/avni1alon/alon/Lab/yalab/data/' # alon
+DEFAULT_FILE_PATH = DATA_PATH + 'water_experiment_1_bach_1.csv'  # alon
+# DEFAULT_FILE_PATH = '..\\Results\\20.5.2020\\ex1.csv'  # yonatan
 
 DEFAULT_HEADER_ROW = 1
 
@@ -20,13 +19,9 @@ def read_experiment_data(file_path=DEFAULT_FILE_PATH, header_row=DEFAULT_HEADER_
                                   usecols=['Time (s)', 'Position (m)', 'Temperature (C)']) \
         .rename(columns={'Time (s)': 'time', 'Position (m)': 'pos', 'Temperature (C)': 'temp'})
     return experiment_data
-
-
 def smoothen_height_data(exp_data, rolling_window_size=30):
     exp_data['pos_error'] = exp_data.pos.rolling(window=rolling_window_size, center=True).std()
     exp_data['smoothened_pos'] = exp_data.pos.rolling(window=rolling_window_size, center=True).mean()
-
-
 def plot_basic_height_data(exp_data, axes, plot_raw=True, plot_smoothened=True, save_plot=False, img_path=None):
     if plot_raw:
         exp_data.plot(x='time', y='pos', label='Raw position data', ax=axes, linestyle='None', marker='.')
@@ -44,13 +39,10 @@ def plot_basic_height_data(exp_data, axes, plot_raw=True, plot_smoothened=True, 
     plt.legend()
     if save_plot:
         plt.savefig(f'{img_path}{plot_title}.png')
-
-
 def get_real_water_height(exp_data, initial_height=WATER_INIT_HEIGHT):
     exp_data['water_height'] = initial_height + exp_data.pos.iloc[:200].mean() - exp_data.pos
-
-
 def plot_water_height_data(exp_data, axes, fit_func_to_data=False, start_fit_time=3000, show_camera_height=False,
+                           camera_water_height=None, camera_time=None,
                            plot_residuals=False, residuales_axes=None, save_plots=False, img_path=None):
     exp_data.plot(x='time', y='water_height', label='Experimental data', grid=True, ax=axes, marker='.',
                   linestyle='None', alpha=0.7)
@@ -72,13 +64,7 @@ def plot_water_height_data(exp_data, axes, fit_func_to_data=False, start_fit_tim
 
     # add camera dots
     if show_camera_height:
-        # TODO: get this data as an input to the function
-        camera_water_height = [0.125, 0.125, 0.125, 0.1225, 0.12, 0.115, 0.11, 0.10625, 0.1025, 0.1, 0.09, 0.0875,
-                               0.085, 0.08375, 0.0825]
-        camera_time = [0, 1800, 3600, 5400, 7200, 9000, 10800, 12600, 14400, 16200, 18000, 19800, 21600, 23400,
-                       25200]
-
-        plt.scatter(camera_time, camera_water_height, label='Camera Data', color='m', marker='x', zorder=5)
+        axes.scatter(camera_time, camera_water_height, label='Camera Data', color='m', marker='x', zorder=5)
 
     axes.set_title('Water height over time')
     axes.set_ylabel('Height of Water[m]')
@@ -86,6 +72,9 @@ def plot_water_height_data(exp_data, axes, fit_func_to_data=False, start_fit_tim
     axes.legend()
     if save_plots:
         axes.savefig(f'{img_path}Linear fit to part of height over time data.png')
+        #plot = exp_data.plot()
+        #fig1 = plot.get_figure()
+        #fig1.savefig(DATA_PATH + f'{img_path}Linear fit to part of height over time data.png')
 
     if plot_residuals:
         sns.residplot(linear_fit_data.time, linear_fit_data.water_height, ax=residuales_axes)
