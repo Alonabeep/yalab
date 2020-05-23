@@ -42,8 +42,8 @@ def plot_single_experiment(data_path):
 
 
 def compare_several_experiments_temperature(experiments_data_paths):
-    plt.figure('Raw Data')
-    raw_axes = plt.gca()
+    plt.figure()
+    axes = plt.gca()
 
     for data_path, time_offset in experiments_data_paths:
         exp_data = read_experiment_data(data_path)
@@ -51,9 +51,24 @@ def compare_several_experiments_temperature(experiments_data_paths):
 
         if time_offset > 0:
             temp_amplitude = exp_data.temp.max() - ROOM_TEMP
-            plot_temp_over_time_data(exp_data, raw_axes, temp_amplitude=temp_amplitude, start_fit_temp=ROOM_TEMP)
+            plot_temp_over_time_data(exp_data, axes, temp_amplitude=temp_amplitude, start_fit_temp=ROOM_TEMP)
         else:
-            plot_temp_over_time_data(exp_data, raw_axes)
+            plot_temp_over_time_data(exp_data, axes)
+
+    plt.show()
+
+
+def compare_several_experiments_height(experiments_data_paths):
+    plt.figure()
+    axes = plt.gca()
+
+    # ignore time offset because all of them started at same height
+    for data_path, time_offset in experiments_data_paths:
+        exp_data = read_experiment_data(data_path)
+
+        get_real_water_height(exp_data)
+
+        plot_water_height_data(exp_data, axes, fit_func_to_data=True)
 
     plt.show()
 
@@ -66,3 +81,4 @@ if __name__ == '__main__':
                         ('..\\Results\\20.5.2020\\ex1.csv', 0)]
 
     compare_several_experiments_temperature(experiments_data)
+    compare_several_experiments_height(experiments_data)
