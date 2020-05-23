@@ -1,6 +1,5 @@
 import matplotlib.pyplot as plt
 import numpy as np
-import pandas as pd
 
 from utils import fit_func, plot_func
 
@@ -8,14 +7,6 @@ from utils import fit_func, plot_func
 DEFAULT_FILE_PATH = '..\\Results\\13.5.2020\\ex1 grouped - 13.5.2020.csv'  # yonatan
 
 DEFAULT_HEADER_ROW = 1
-
-
-def read_experiment_data(file_path=DEFAULT_FILE_PATH, header_row=DEFAULT_HEADER_ROW):
-    experiment_data = pd.read_csv(file_path, header=header_row - 1,
-                                  usecols=['Time (s)', 'Position (m)', 'Temperature (C)']) \
-        .rename(columns={'Time (s)': 'time', 'Position (m)': 'pos', 'Temperature (C)': 'temp'})
-
-    return experiment_data
 
 
 def plot_temp_over_time_data(exp_data, axes, fit_func_to_data=True, start_fit_time=0, linearize=False):

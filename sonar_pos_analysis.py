@@ -1,5 +1,4 @@
 import matplotlib.pyplot as plt
-import pandas as pd
 import seaborn as sns
 
 from utils import plot_line, fit_func
@@ -13,13 +12,6 @@ WATER_INIT_HEIGHT = 0.126  # [m]
 DEFAULT_FILE_PATH = '..\\Results\\20.5.2020\\ex1.csv'  # yonatan
 
 DEFAULT_HEADER_ROW = 1
-
-
-def read_experiment_data(file_path=DEFAULT_FILE_PATH, header_row=DEFAULT_HEADER_ROW):
-    experiment_data = pd.read_csv(file_path, header=header_row - 1,
-                                  usecols=['Time (s)', 'Position (m)', 'Temperature (C)']) \
-        .rename(columns={'Time (s)': 'time', 'Position (m)': 'pos', 'Temperature (C)': 'temp'})
-    return experiment_data
 
 
 def smoothen_height_data(exp_data, rolling_window_size=30):
