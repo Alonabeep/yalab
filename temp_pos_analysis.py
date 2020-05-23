@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
@@ -17,11 +18,11 @@ def read_experiment_data(file_path=DEFAULT_FILE_PATH, header_row=DEFAULT_HEADER_
     return experiment_data
 
 
-def plot_temp_over_time_data(experiment_data, axes, fit_func_to_data=True, start_fit_time=0, linearize=False):
-    temp_amplitude = experiment_data.temp.max() - experiment_data.temp.min()
+def plot_temp_over_time_data(exp_data, axes, fit_func_to_data=True, start_fit_time=0, linearize=False):
+    temp_amplitude = exp_data.temp.max() - exp_data.temp.min()
 
     start_fit_time = 0
-    fit_data = experiment_data[experiment_data.time > start_fit_time]
+    fit_data = exp_data[exp_data.time > start_fit_time]
     start_fit_temp = fit_data.temp.iat[0]
 
     if fit_func_to_data:
@@ -37,15 +38,25 @@ def plot_temp_over_time_data(experiment_data, axes, fit_func_to_data=True, start
             func_to_plot = lambda t: temp_over_time_func(t, decay_time)
             plot_range = [start_fit_time, fit_data.time.iat[-1]]
         else:
-            experiment_data['linearized_time'] = 1 - np.exp(-experiment_data.time / decay_time)
+            exp_data['linearized_time'] = 1 - np.exp(-exp_data.time / decay_time)
             func_to_plot = lambda linear_t: temp_amplitude * linear_t + start_fit_temp
-            plot_range = [0, 1]
+            plot_range = [0, exp_data.linearized_time.max() + 1e-3]
 
         plot_func(func_to_plot, axes=axes, x_range=plot_range, c='k', label=fitted_data_label, zorder=12)
 
-    experiment_data.plot(x='time' if not linearize else 'linearized_time', y='temp', grid=True, linestyle='None',
-                         marker='.', label='Experimental data', ax=axes)
+    exp_data.plot(x='time' if not linearize else 'linearized_time', y='temp', grid=True, linestyle='None',
+                  marker='.', label='Experimental data', ax=axes)
     axes.legend()
-    axes.set_xlabel('Time[s]' if not linearize else f'1-exp(-t/{decay_time:.2f})')
-    axes.set_ylabel('Temperature[$\degree$C]')
-    axes.set_title('T(t) while heating plate is turned on')
+    axes.set_xlabel('Time[s]')
+    if linearize:
+        axes.set_xticks([])
+        max_tick_time = round(decay_time * 2, -2)
+        tick_time_interval = 350
+
+        unnormalized_time, real_time = zip(*[(1 - np.exp(-t / decay_time), int(t)) for t in
+                                             np.linspace(0, max_tick_time,
+                                                         num=int(max_tick_time / tick_time_interval))])
+        plt.xticks(unnormalized_time, real_time)
+
+        axes.set_ylabel('Temperature[$\degree$C]')
+        axes.set_title('T(t) while heating plate is turned on')
