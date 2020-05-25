@@ -1,10 +1,10 @@
 import matplotlib.pyplot as plt
 
 if __name__ == '__main__':
-    experiment_data = {'rate_of_evaporation': [2.48e-6, 3.53e-6, 6.55e-6],
-                       'water_temp': [70, 79, 91],
-                       'roe_error': [7.9e-8, 9.8e-8, 6.9e-8],
-                       'temp_error': [1.5] * 3}
+    experiment_data = {'rate_of_evaporation': [1.35e-6, 2.24e-6, 4.13e-6, 8.54701e-06],
+                       'water_temp': [70, 79, 91, 97],
+                       'roe_error': [1.16e-8, 2.03e-8, 4.56e-8, 0],
+                       'temp_error': [1.5] * 3 + [0.5]}
     home_experiment_data = {'rate_of_evaporation': [1.88e-5, 6.17e-6, 1.63e-5],
                             'water_temp': [100.3, 101.4, 102],
                             'roe_error': [1.36e-6, 6.2e-8, 2.28e-7],
@@ -18,6 +18,7 @@ if __name__ == '__main__':
                  ecolor='r', capsize=2, marker='d', c='m', linestyle='None', zorder=998,
                  label='Home Experiments Data')
 
+    plt.semilogy()
     plt.grid(zorder=-1)
     plt.ylabel('Rate of evaporation[m/s]')
     plt.xlabel('Measurement temperature[$\degree$C]')
