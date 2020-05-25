@@ -3,7 +3,7 @@ import seaborn as sns
 
 from utils import plot_line, fit_func
 
-WATER_INIT_HEIGHT = 0.126  # [m]
+WATER_INIT_HEIGHT = 0.096  # [m]
 
 DATA_PATH = '/home/avni1alon/alon/Lab/yalab/data/'  # alon
 DEFAULT_FILE_PATH = DATA_PATH + 'water_experiment_1_bach_1.csv'  # alon
