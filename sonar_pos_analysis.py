@@ -55,7 +55,7 @@ def plot_water_height_data(exp_data, axes, fit_func_to_data=False, start_fit_tim
     else:
         data_label = 'Experimental data'
     exp_data.plot(x='time', y='water_height', label=data_label, grid=True, ax=axes, linestyle='None', alpha=0.4,
-                  **kwargs)
+                  marker='.', **kwargs)
 
     if fit_func_to_data:
         # linear fit for position over time from a certain point

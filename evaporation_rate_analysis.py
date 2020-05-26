@@ -16,9 +16,9 @@ def fit_line(experiment_data):
 
 
 if __name__ == '__main__':
-    experiment_data = {'rate_of_evaporation': [2.20e-7, 1.35e-6, 2.24e-6, 4.13e-6, 8.63e-6],
-                       'water_temp': [40, 70, 79, 91, 97],
-                       'roe_error': [3.59e-9, 1.16e-8, 2.03e-8, 4.56e-8, 2.79e-7],
+    experiment_data = {'rate_of_evaporation': [2.1e-7, 1.35e-6, 2.24e-6, 4.13e-6, 8.63e-6],
+                       'water_temp': [39, 70, 79, 91, 97],
+                       'roe_error': [2e-8, 1.16e-8, 2.03e-8, 4.56e-8, 2.79e-7],
                        'temp_error': [1.5] * 4 + [1]}
     home_experiment_data = {'rate_of_evaporation': [1.88e-5, 6.17e-6, 1.63e-5],
                             'water_temp': [100.3, 101.4, 102],
