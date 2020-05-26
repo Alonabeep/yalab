@@ -63,7 +63,7 @@ def plot_water_height_data(exp_data, axes, fit_func_to_data=False, start_fit_tim
 
         linear_func = lambda t, a, b: a * t + b
         [slope, intercept], errors = fit_func(linear_func, linear_fit_data.time, linear_fit_data.water_height)
-        print(slope, intercept, errors)
+        print(f'slope - {slope}, {intercept} - intercept, errors - {errors}')
 
         end_time = linear_fit_data.time.max()
 
