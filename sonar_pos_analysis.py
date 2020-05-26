@@ -13,17 +13,6 @@ DEFAULT_FILE_PATH = DATA_PATH + 'water_experiment_1_bach_1.csv'  # alon
 DEFAULT_HEADER_ROW = 1
 
 
-<<<<<<< HEAD
-def read_experiment_data(file_path=DEFAULT_FILE_PATH, header_row=DEFAULT_HEADER_ROW):
-    experiment_data = pd.read_csv(file_path, header=header_row - 1,
-                                  usecols=['Time (s)', 'Position (m)', 'Temperature (C)']) \
-        .rename(columns={'Time (s)': 'time', 'Position (m)': 'pos', 'Temperature (C)': 'temp'})
-    return experiment_data
-def smoothen_height_data(exp_data, rolling_window_size=30):
-    exp_data['pos_error'] = exp_data.pos.rolling(window=rolling_window_size, center=True).std()
-    exp_data['smoothened_pos'] = exp_data.pos.rolling(window=rolling_window_size, center=True).mean()
-def plot_basic_height_data(exp_data, axes, plot_raw=True, plot_smoothened=True, save_plot=False, img_path=None):
-=======
 def smoothen_height_data(exp_data, rolling_window_size=30):
     exp_data['pos_error'] = exp_data.pos.rolling(window=rolling_window_size, center=True).std()
     exp_data['smoothened_pos'] = exp_data.pos.rolling(window=rolling_window_size, center=True).mean()
@@ -31,7 +20,6 @@ def smoothen_height_data(exp_data, rolling_window_size=30):
 
 def plot_basic_height_data(exp_data, axes, plot_raw=True, plot_smoothened=True, save_plot=False, img_path=None,
                            temp_label=False):
->>>>>>> 023806f7b2e99b680c0cb9d132d638846b7c9f2a
     if plot_raw:
         exp_data.plot(x='time', y='pos', label='Raw position data', ax=axes, linestyle='None', marker='.')
 
@@ -54,15 +42,13 @@ def plot_basic_height_data(exp_data, axes, plot_raw=True, plot_smoothened=True, 
     plt.legend()
     if save_plot:
         plt.savefig(f'{img_path}{plot_title}.png')
+
+
 def get_real_water_height(exp_data, initial_height=WATER_INIT_HEIGHT):
     exp_data['water_height'] = initial_height + exp_data.pos.iloc[:200].mean() - exp_data.pos
+
+
 def plot_water_height_data(exp_data, axes, fit_func_to_data=False, start_fit_time=3000, show_camera_height=False,
-<<<<<<< HEAD
-                           camera_water_height=None, camera_time=None,
-                           plot_residuals=False, residuales_axes=None, save_plots=False, img_path=None):
-    exp_data.plot(x='time', y='water_height', label='Experimental data', grid=True, ax=axes, marker='.',
-                  linestyle='None', alpha=0.7)
-=======
                            plot_residuals=False, residuales_axes=None, save_plots=False, img_path=None, fit_line=None,
                            label_fit=False, temp_label=False, **kwargs):
     if temp_label:
@@ -72,7 +58,6 @@ def plot_water_height_data(exp_data, axes, fit_func_to_data=False, start_fit_tim
         data_label = 'Experimental data'
     exp_data.plot(x='time', y='water_height', label=data_label, grid=True, ax=axes, linestyle='None', alpha=0.4,
                   **kwargs)
->>>>>>> 023806f7b2e99b680c0cb9d132d638846b7c9f2a
 
     if fit_func_to_data:
         # linear fit for position over time from a certain point
@@ -80,7 +65,7 @@ def plot_water_height_data(exp_data, axes, fit_func_to_data=False, start_fit_tim
 
         linear_func = lambda t, a, b: a * t + b
         [slope, intercept], errors = fit_func(linear_func, linear_fit_data.time, linear_fit_data.water_height)
-        print(slope, intercept, errors)
+        print(f'slope - {slope}, {intercept} - intercept, errors - {errors}')
 
         end_time = linear_fit_data.time.max()
 

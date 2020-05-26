@@ -7,7 +7,7 @@ from temp_pos_analysis import plot_temp_over_time_data
 from utils import fit_and_plot_line
 
 DATA_PATH = '/home/avni1alon/alon/Lab/yalab/data/'  # alon
-DEFAULT_FILE_PATH = DATA_PATH + 'water_experiment_3_bach_1.csv'  # alon
+DEFAULT_FILE_PATH = DATA_PATH + 'water_experiment_4_Run_2.csv'  # alon
 # DEFAULT_FILE_PATH = '..\\Results\\18.5.2020\\exp2 - cooling over night.csv'  # yonatan
 
 DEFAULT_HEADER_ROW = 1
@@ -56,9 +56,8 @@ def plot_single_experiment(data_path):
     fig, axs = plt.subplots(2, sharex=True)
 
     get_real_water_height(exp_data)
-    plot_water_height_data(exp_data, axes=axs[0], fit_func_to_data=True, start_fit_time=start_fit_time,
-                           show_camera_height=True,
-                           camera_water_height=camera_water_height3, camera_time=camera_time3, save_plots=False)
+    plot_water_height_data(exp_data, axes=axs[0], label_fit=True, fit_func_to_data=True, start_fit_time=start_fit_time,
+                           show_camera_height=False, save_plots=False)
 
     plot_temp_over_time_data(exp_data, axs[1])
 
@@ -262,14 +261,14 @@ def plot_cooling_graphs_on_same_plot(experiments_data_paths, END_TEMP=25):
 if __name__ == '__main__':
     # plot_cooling_and_heating_times(DEFAULT_FILE_PATH, '..\\Results\\18.5.2020\\exp1 - last run only.csv')
 
-    # plot_single_experiment(DEFAULT_FILE_PATH)
+    plot_single_experiment(DEFAULT_FILE_PATH)
 
-    experiments_data = [('..\\Results\\13.5.2020\\ex1 grouped - 13.5.2020.csv', 0),
-                        ('..\\Results\\18.5.2020\\exp1 - last run only.csv', 2100),
-                        ('..\\Results\\20.5.2020\\ex1.csv', 0)]
+    # experiments_data = [('..\\Results\\13.5.2020\\ex1 grouped - 13.5.2020.csv', 0),
+    #                     ('..\\Results\\18.5.2020\\exp1 - last run only.csv', 2100),
+    #                     ('..\\Results\\20.5.2020\\ex1.csv', 0)]
 
     # compare_several_experiments_temperature(experiments_data)
-    compare_several_experiments_height(experiments_data)
+    # compare_several_experiments_height(experiments_data)
 
     # cooling_experiments_data = ['..\\Results\\18.5.2020\\exp2 - cooling over night.csv',
     #                             '..\\Results\\14.5.2020\\exp2.csv']
