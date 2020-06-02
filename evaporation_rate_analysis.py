@@ -24,16 +24,22 @@ if __name__ == '__main__':
                             'water_temp': [100.3, 101.4, 102],
                             'roe_error': [1.36e-6, 6.2e-8, 2.28e-7],
                             'temp_error': [2] * 3}
+    kettle_experiment_data = {
+        'rate_of_evaporation': [6.84783E-05, 3.28571E-05, 0.000047, 1.77632E-05, 0.00007, 0.0000085],
+        'water_temp': [97.57, 97.39, 97.44, 97.46, 97.42, 96.98],
+        'roe_error': [5.15366E-06, 4.73856E-06, 3.88155E-06, 1.78355E-06, 6.86275E-06,
+                      5.85015E-07]}
 
     plt.errorbar(experiment_data['water_temp'], experiment_data['rate_of_evaporation'],
                  yerr=experiment_data['roe_error'], xerr=experiment_data['temp_error'], ecolor='r', capsize=2,
-                 marker='o', linestyle='None', zorder=999, label='Lab Experiments Data')
+                 marker='o', linestyle='None', zorder=999, label='Heat Plate Experiments Data')
     plt.errorbar(home_experiment_data['water_temp'], home_experiment_data['rate_of_evaporation'],
                  yerr=home_experiment_data['roe_error'], xerr=home_experiment_data['temp_error'],
                  ecolor='r', capsize=2, marker='d', c='m', linestyle='None', zorder=998,
                  label='Home Experiments Data')
-
-    func_to_fit = lambda temp, power, amplitude, offset: amplitude * temp ** (power) + offset
+    plt.errorbar(kettle_experiment_data['water_temp'], kettle_experiment_data['rate_of_evaporation'],
+                 yerr=kettle_experiment_data['roe_error'], ecolor='r', capsize=2, marker='X', c='darkgreen',
+                 linestyle='None', zorder=998.5, label='Kettle Experiments Data', ms=7)
 
     plt.semilogy()
     plt.grid(zorder=-1)
@@ -41,4 +47,6 @@ if __name__ == '__main__':
     plt.xlabel('Measurement temperature[$\degree$C]')
     plt.title('Rate of evaporation vs measurement temperature')
     plt.legend()
+    plt.tight_layout()
+
     plt.show()
