@@ -16,10 +16,11 @@ def fit_line(experiment_data):
 
 
 if __name__ == '__main__':
-    experiment_data = {'rate_of_evaporation': [2.1e-7, 1.35e-6, 2.24e-6, 4.13e-6, 8.63e-6],
-                       'water_temp': [39, 70, 79, 91, 97],
-                       'roe_error': [2e-8, 1.16e-8, 2.03e-8, 4.56e-8, 2.79e-7],
-                       'temp_error': [1.5] * 4 + [1]}
+    # TODO: use camera data instead of sonar data for 39[C] measurement
+    experiment_data = {'rate_of_evaporation': [2.1e-7, 1.90e-6, 2.71e-6, 5.03e-6, 8.63e-6],
+                       'water_temp': [39.2, 71.5, 79.5, 91.3, 97.2],
+                       # 'roe_error': [2e-8, 1.16e-8, 2.03e-8, 4.56e-8, 2.79e-7],
+                       'temp_error': [0.4, 1.5, 1.5, 1.2, 0.7]}
     home_experiment_data = {'rate_of_evaporation': [1.88e-5, 6.17e-6, 1.63e-5],
                             'water_temp': [100.3, 101.4, 102],
                             'roe_error': [1.36e-6, 6.2e-8, 2.28e-7],
@@ -31,7 +32,7 @@ if __name__ == '__main__':
                       5.85015E-07]}
 
     plt.errorbar(experiment_data['water_temp'], experiment_data['rate_of_evaporation'],
-                 yerr=experiment_data['roe_error'], xerr=experiment_data['temp_error'], ecolor='r', capsize=2,
+                 yerr=None, xerr=experiment_data['temp_error'], ecolor='r', capsize=2,
                  marker='o', linestyle='None', zorder=999, label='Heat Plate Experiments Data')
     plt.errorbar(home_experiment_data['water_temp'], home_experiment_data['rate_of_evaporation'],
                  yerr=home_experiment_data['roe_error'], xerr=home_experiment_data['temp_error'],
