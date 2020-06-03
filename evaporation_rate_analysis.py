@@ -42,7 +42,7 @@ if __name__ == '__main__':
                  yerr=kettle_experiment_data['roe_error'], ecolor='r', capsize=2, marker='X', c='darkgreen',
                  linestyle='None', zorder=998.5, label='Kettle Experiments Data', ms=7)
 
-    # plt.semilogy()
+    plt.semilogy()
     plt.grid(zorder=-1)
     plt.ylabel('Rate of evaporation[m/s]')
     plt.xlabel('Measurement temperature[$\degree$C]')

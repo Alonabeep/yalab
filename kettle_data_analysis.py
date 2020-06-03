@@ -41,8 +41,8 @@ if __name__ == '__main__':
     [slope, intercept], errors = fit_and_plot_line(power, rate_of_evaporation, fig=fig_name,
                                                    x_range=[-10, max(power) * 1.05])
 
-    plt.legend(['Experimental Data', f'Linear fit\n'
-    f'({slope:.1e}$\pm${errors[0]:.1e})r{intercept:.1e}$\pm${errors[1]:.1e}'])
+    plt.legend([f'Linear fit\n({slope:.1e}$\pm${errors[0]:.1e})p{intercept:.1e}$\pm${errors[1]:.1e}',
+                'Experimental Data'])
     plt.title('Rate of evaporation vs. Power')
     plt.ylabel('Rate of evaporation [m/s]')
     plt.xlabel('Power [W]')
