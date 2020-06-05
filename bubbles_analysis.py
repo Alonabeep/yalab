@@ -6,7 +6,8 @@ from main import read_experiment_data
 if __name__ == '__main__':
     experiments_data_paths = ['..\\Results\\13.5.2020\\ex1 grouped - 13.5.2020.csv',
                               '..\\Results\\18.5.2020\\exp1 - last run only.csv',
-                              '..\\Results\\20.5.2020\\ex1.csv']
+                              '..\\Results\\20.5.2020\\ex1.csv',
+                              '..\\Results\\25.5.2020\\ex2 - over night.csv']
 
     bubbles_per_experiment = [[0,
                                5,
@@ -147,11 +148,23 @@ if __name__ == '__main__':
                                0.5,
                                0.5,
                                0.5,
-                               0.5]]
+                               0.5],
+                              [1,
+                               3,
+                               4,
+                               4,
+                               3.5,
+                               3,
+                               2.5,
+                               2,
+                               1.5,
+                               1,
+                               1]]
     camera_time = [list(range(0, 11 * 1800, 1800))[:10],
                    [2230, 3730, 5230, 6730, 8230, 9730, 11230, 12730, 14230, 15730, 17230, 18730, 20230],
                    list(np.linspace(0, 13 * 60, 26)) +
-                   list(np.linspace(1140, 1140 + 90 * 30, 91))]
+                   list(np.linspace(1140, 1140 + 90 * 30, 91)),
+                   range(0, 11 * 1800 - 1, 1800)]
 
     exp_num = 2
 
