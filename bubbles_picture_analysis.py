@@ -1,6 +1,9 @@
+import os
+
 import cv2
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 from PIL import Image
 
 
@@ -55,18 +58,17 @@ class GripPipeline:
         return detector.detect(input)
 
 
-def rgb_img_to_binary(img):
-    return np.array(list(map(lambda row: [sum(color_vec) < 255 for color_vec in row], img)))
+def red_black_img_to_binary(img):
+    return img[:, :, 0] < 255
 
 
-if __name__ == '__main__':
-    img_path = 'D:\\Users\\yonat\\Desktop\\HUJI\\HUJI Homework\\Advanced Physics Lab A\\Water Heating - Experiment B\\Camera Pics\\8.6.2020\\main exp pics\\16-28-07.000-070.png'
-
+def get_num_bubble_pixels_in_picture(img_path, debug=False):
     image = Image.open(img_path)
 
-    fig, axs = plt.subplots(ncols=3, sharex=True, sharey=True)
-    axs[0].imshow(~np.asarray(image), cmap='Greys')
-    axs[0].set_title('Original image')
+    if debug:
+        fig, axs = plt.subplots(ncols=3, sharex=True, sharey=True)
+        axs[0].imshow(~np.asarray(image), cmap='Greys')
+        axs[0].set_title('Original image')
 
     # get blobs from the main pipeline
     pipeline = GripPipeline()
@@ -75,13 +77,41 @@ if __name__ == '__main__':
     blobs_only_img = cv2.drawKeypoints(np.zeros_like(image), img_blobs_keypoints, np.array([]), (0, 0, 255),
                                        cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
 
-    axs[1].imshow(cv2.cvtColor(blobs_only_img, cv2.COLOR_BGR2RGB))
-    axs[1].set_title('Blobs only, unfilled')
+    if debug:
+        axs[1].imshow(cv2.cvtColor(blobs_only_img, cv2.COLOR_BGR2RGB))
+        axs[1].set_title('Blobs only, unfilled')
 
     # fill in the blobs and get the area of the bubbles
     filled_image = cv2.floodFill(blobs_only_img, None, (0, 0), 255)[1]
 
-    axs[2].imshow(rgb_img_to_binary(filled_image), cmap='Greys')
-    axs[2].set_title('Blobs only, filled')
+    if debug:
+        axs[2].imshow(red_black_img_to_binary(filled_image), cmap='Greys')
+        axs[2].set_title('Blobs only, filled')
+
+    return red_black_img_to_binary(filled_image).sum()
+
+
+def analyze_all_images_in_dir(dir_path, time_between_pics=30):
+    num_bubbles_pixels = []
+    time = []
+
+    current_pic_time = 0
+    for img_name in os.listdir(dir_path):
+        print(f'Analyzing {img_name}')
+
+        num_bubbles_pixels.append(get_num_bubble_pixels_in_picture(dir_path + img_name))
+        time.append(current_pic_time)
+
+        current_pic_time += time_between_pics
+
+    img_data = pd.DataFrame({'num_bubble_pixels': num_bubbles_pixels, 'time': time})
+    return img_data
+
+
+if __name__ == '__main__':
+    dir_path = 'D:\\Users\\yonat\\Desktop\\HUJI\\HUJI Homework\\Advanced Physics Lab A\\Water Heating - Experiment B\\Camera Pics\\8.6.2020\\main exp pics\\'
+
+    results_path = 'D:\\Users\\yonat\\Desktop\\HUJI\\HUJI Homework\\Advanced Physics Lab A\\Water Heating - Experiment B\\Results\\8.6.2020\\bubble_pixels_ex1.csv'
+    analyze_all_images_in_dir(dir_path).to_csv(results_path)
 
     plt.show()
