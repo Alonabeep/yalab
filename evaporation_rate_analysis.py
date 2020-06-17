@@ -17,10 +17,10 @@ def fit_line(experiment_data):
 
 if __name__ == '__main__':
     # TODO: use camera data instead of sonar data for 39[C] measurement
-    experiment_data = {'rate_of_evaporation': [2.1e-7, 1.90e-6, 2.71e-6, 5.03e-6, 8.63e-6],
-                       'water_temp': [39.2, 71.5, 79.5, 91.3, 97.2],
-                       'roe_error': [2e-8, 2.2e-8, 2.00e-8, 5.33e-8, 1.04e-6],
-                       'temp_error': [0.4, 1.5, 1.5, 1.2, 0.7]}
+    experiment_data = {'rate_of_evaporation': [2.1e-7, 1.90e-6, 2.71e-6, 5.03e-6, 8.63e-6, 1.89e-8],
+                       'water_temp': [39.2, 71.5, 79.5, 91.3, 97.2, 23],
+                       'roe_error': [2e-8, 2.2e-8, 2.00e-8, 5.33e-8, 1.04e-6, 1.72e-9],
+                       'temp_error': [0.4, 1.5, 1.5, 1.2, 0.7, 1.5]}
     home_experiment_data = {'rate_of_evaporation': [1.88e-5, 6.17e-6, 1.63e-5],
                             'water_temp': [100.3, 101.4, 102],
                             'roe_error': [1.36e-6, 6.2e-8, 2.28e-7],
@@ -33,21 +33,29 @@ if __name__ == '__main__':
 
     plt.errorbar(experiment_data['water_temp'], experiment_data['rate_of_evaporation'],
                  yerr=experiment_data['roe_error'], xerr=experiment_data['temp_error'], ecolor='r', capsize=2,
-                 marker='o', linestyle='None', zorder=999, label='Heat Plate Experiments Data')
-    plt.errorbar(home_experiment_data['water_temp'], home_experiment_data['rate_of_evaporation'],
-                 yerr=home_experiment_data['roe_error'], xerr=home_experiment_data['temp_error'],
-                 ecolor='r', capsize=2, marker='d', c='m', linestyle='None', zorder=998,
-                 label='Home Experiments Data')
+                 marker='o', linestyle='None', zorder=999, label='Heat Plate Experiments Data', c='b')
+    # plt.errorbar(home_experiment_data['water_temp'], home_experiment_data['rate_of_evaporation'],
+    #              yerr=home_experiment_data['roe_error'], xerr=home_experiment_data['temp_error'],
+    #              ecolor='r', capsize=2, marker='d', c='m', linestyle='None', zorder=998,
+    #              label='Home Experiments Data')
     plt.errorbar(kettle_experiment_data['water_temp'], kettle_experiment_data['rate_of_evaporation'],
                  yerr=kettle_experiment_data['roe_error'], ecolor='r', capsize=2, marker='X', c='darkgreen',
                  linestyle='None', zorder=998.5, label='Kettle Experiments Data', ms=7)
+
+    plt.annotate('Heat plate data',
+                 (experiment_data['water_temp'][1] - 5, experiment_data['rate_of_evaporation'][1] + 1e-6), ha='center',
+                 c='b')
+
+    plt.annotate('Kettle data',
+                 (kettle_experiment_data['water_temp'][1] - 7, kettle_experiment_data['rate_of_evaporation'][1] + 1e-6),
+                 ha='center', c='darkgreen')
 
     plt.semilogy()
     plt.grid(zorder=-1)
     plt.ylabel('Rate of evaporation[m/s]')
     plt.xlabel('Measurement temperature[$\degree$C]')
     plt.title('Rate of evaporation vs measurement temperature')
-    plt.legend()
+    # plt.legend()
     plt.tight_layout()
 
     plt.show()
