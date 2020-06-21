@@ -5,6 +5,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from PIL import Image
+from pyfinance.ols import PandasRollingOLS
+
+from main import read_experiment_data
 
 
 class GripPipeline:
@@ -110,8 +113,40 @@ def analyze_all_images_in_dir(dir_path, time_between_pics=30):
 
 if __name__ == '__main__':
     dir_path = 'D:\\Users\\yonat\\Desktop\\HUJI\\HUJI Homework\\Advanced Physics Lab A\\Water Heating - Experiment B\\Camera Pics\\8.6.2020\\main exp pics\\'
-
     results_path = 'D:\\Users\\yonat\\Desktop\\HUJI\\HUJI Homework\\Advanced Physics Lab A\\Water Heating - Experiment B\\Results\\8.6.2020\\bubble_pixels_ex1.csv'
-    analyze_all_images_in_dir(dir_path).to_csv(results_path)
+    experiment_path = 'D:\\Users\\yonat\\Desktop\\HUJI\\HUJI Homework\\Advanced Physics Lab A\\Water Heating - Experiment B\\Results\\8.6.2020\\main_run_data.csv'
 
+    exp_data = read_experiment_data(experiment_path, cooling_measurement=True)
+    # bubbles_data = analyze_all_images_in_dir(dir_path)
+    bubbles_data = pd.read_csv(results_path)
+
+    window_size = 20
+    exp_data['temp_change_rate'] = PandasRollingOLS(x=exp_data.time, y=exp_data.temp, window=window_size).beta \
+        .shift(-int(window_size / 2))
+
+    fig, axs = plt.subplots(2, sharex=True)
+    exp_data.plot(x='time', y='temp_change_rate', linestyle='None', marker='.', grid=True, ax=axs[0],
+                  label='Temperature rate of change', c='k')
+    # exp_data.plot(x='time', y='temp', linestyle='None', marker='.', grid=True, ax=ax)
+
+    scale_const = 2e-7
+    secondary_axis = axs[0].secondary_yaxis('right', functions=(lambda x: x / scale_const, lambda x: x * scale_const))
+
+    bubbles_data.time += 490
+    axs[0].scatter(bubbles_data.time, bubbles_data.num_bubble_pixels * scale_const, facecolors='None', edgecolors='c',
+                   zorder=12, label='# of bubble pixels')
+
+    axs[0].set_ylabel('Temperature rate of change [$\degree$C/s]')
+    secondary_axis.set_ylabel('# of bubble pixels')
+    axs[0].legend()
+
+    exp_data.plot(x='time', y='temp', linestyle='None', marker='.', ax=axs[1], grid=True)
+
+    axs[1].set_ylabel('Temperature [$\degree$C]')
+    axs[1].get_legend().remove()
+
+    plt.xlabel('Time[s]')
+    axs[0].set_title('Temperature rate of change, # of bubble pixels, and temperature over time')
+    plt.tight_layout()
+    plt.subplots_adjust(hspace=0)
     plt.show()
