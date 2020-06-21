@@ -1,38 +1,43 @@
 import matplotlib.pyplot as plt
+import numpy as np
 
 from utils import fit_and_plot_line
 
 if __name__ == '__main__':
-    rate_of_evaporation = [6.85E-05,
-                           3.29E-05,
-                           0.000047,
-                           1.78E-05,
-                           0.00007,
-                           0.0000085]
-    roe_max_error = [5.15366E-06,
-                     4.73856E-06,
-                     3.88155E-06,
-                     1.78355E-06,
-                     6.86275E-06,
-                     5.85015E-07]
+    rate_of_evaporation = np.array([6.85E-05,
+                                    3.29E-05,
+                                    0.000047,
+                                    1.78E-05,
+                                    0.00007,
+                                    0.0000085,
+                                    3.4565E-06])
+    roe_max_error = np.array([5.15366E-06,
+                              4.73856E-06,
+                              3.88155E-06,
+                              1.78355E-06,
+                              6.86275E-06,
+                              5.85015E-07,
+                              2.5486E-07])
     power = [1667.155,
              780.75,
              1194.175,
              420.2315,
              1646.4825,
-             246.74]
+             246.74,
+             116.29]
     power_max_error = [24,
                        13.41,
                        16.61,
                        9.816,
                        19.54,
-                       9.22]
+                       9.22,
+                       5.17]
     avg_boiling_temp = [97.57,
                         97.39,
                         97.44,
                         97.46,
                         97.42,
-                        96.98]
+                        96.98, 85]
 
     fig_name = 'RoE vs Power'
     plt.figure(fig_name)
@@ -62,5 +67,6 @@ if __name__ == '__main__':
     plt.ylabel('Average boiling temperature [$\degree$C]', fontweight='bold')
     plt.grid(zorder=-12)
 
+    plt.close(fig_name)
     plt.tight_layout()
     plt.show()
