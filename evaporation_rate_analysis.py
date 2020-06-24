@@ -16,11 +16,10 @@ def fit_line(experiment_data):
 
 
 if __name__ == '__main__':
-    # TODO: use camera data instead of sonar data for 39[C] measurement
-    experiment_data = {'rate_of_evaporation': [4.17e-7, 1.90e-6, 2.71e-6, 5.03e-6, 8.63e-6, 1.89e-8],
-                       'water_temp': [39.2, 71.5, 79.5, 91.3, 97.2, 23],
-                       'roe_error': [5.6e-8, 2.2e-8, 2.00e-8, 5.33e-8, 1.04e-6, 1.72e-9],
-                       'temp_error': [0.4, 1.5, 1.5, 1.2, 0.7, 1.5]}
+    experiment_data = {'rate_of_evaporation': [4.17e-7, 1.90e-6, 2.71e-6, 5.03e-6, 8.63e-6, 1.89e-8, 3.46e-6],
+                       'water_temp': [39.2, 71.5, 79.5, 91.3, 97.2, 23, 85.6],
+                       'roe_error': [5.6e-8, 2.2e-8, 2.00e-8, 5.33e-8, 1.04e-6, 1.72e-9, 2.55e-7],
+                       'temp_error': [0.4, 1.5, 1.5, 1.2, 0.7, 1.5, 0.8]}
     home_experiment_data = {'rate_of_evaporation': [1.88e-5, 6.17e-6, 1.63e-5],
                             'water_temp': [100.3, 101.4, 102],
                             'roe_error': [1.36e-6, 6.2e-8, 2.28e-7],
